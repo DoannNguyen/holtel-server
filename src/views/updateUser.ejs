@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        form {
+            text-align: center;
+        }
+        label{
+            display: block;
+        }
+        button{
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    
+    <form action="/holtel-server/update-user" method="post">
+        <h3>Update User</h3>
+        <div>
+            <input type="text" name="id" hidden value="<%= dataUser[0].id %>">
+        </div>
+        <div>
+            <label for="">User name:</label>
+            <input type="text" name="userName" autocomplete="off" value="<%= dataUser[0].username %>">
+        </div>
+        <div>
+            <label for="">password</label>
+            <input type="password" name="password" autocomplete="off" value="<%= dataUser[0].password %>">
+        </div>
+        <div>
+            <label for="">name</label>
+            <input type="text" name="name" autocomplete="off" value="<%= dataUser[0].name %>">
+        </div>
+        <div>
+            <label for="">phone number</label>
+            <input type="text" name="phoneNumber" autocomplete="off" value="<%= dataUser[0].phone %>">
+        </div>
+        <div>
+            <label for="">address</label>
+            <input type="text" name="address" autocomplete="off" value="<%= dataUser[0].address %>">
+        </div>
+        <div>
+            <button type="submit">Submit</button>
+        </div>
+    </form>
+</body>
+</html>

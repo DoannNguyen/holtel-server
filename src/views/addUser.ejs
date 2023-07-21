@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/style.css">
+    <style>
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+    
+        td,
+        th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+    
+        tr:nth-child(even) {
+            background-color: #dddddd;
+        }
+        td img {
+            max-height:5rem ;
+            object-fit : cover;
+            margin: auto;
+        }
+
+    </style>
+</head>
+<body>
+
+    <table>
+        <h3>List User</h3>
+        <tHead>
+            <tr>
+                <th>username</th>
+                <th>password</th>
+                <th>name</th>
+                <th>phone</th>
+                <th>address</th>
+                <th>image</th>
+                <th>action</th>
+            </tr>
+        </tHead>
+        <tBody>
+            <% for(let i=0; i<dataUser.length; i++) {%>
+                <tr>
+                    <td><%= dataUser[i].username %></td>
+                    <td>
+                        <%= dataUser[i].password %>
+                    </td>
+                    <td>
+                        <%= dataUser[i].name %>
+                    </td>
+                    <td >
+                        <%= dataUser[i].phone %>
+                    </td>
+                    <td>
+                        <%= dataUser[i].address %>
+                    </td>
+                    <td>
+                        
+                        <% if(dataUser[i].avatar != null && dataUser[i].avatar != ""){ %>
+                            <img src='http://localhost:3000<%= dataUser[i].avatar %>' alt="">
+                        <% }else{ %>
+                            <img src="" alt="">
+                        <% } %>
+                    </td>
+                    <td>
+                        <!-- Button trigger modal -->
+                        <button><a href="/holtel-server/delete/<%= dataUser[i].id %>">delete</a></button> |
+                        <button><a href="/holtel-server/update/<%= dataUser[i].id %>">update</a></button> |
+                        <button><a href="/holtel-server/insert-avatar/<%= dataUser[i].id %>">insert avatar</a></button>
+                    </td>
+                </tr>
+            <%}%>
+        </tBody>
+    </table>
+    <hr>
+
+   <form action="/holtel-server/create-user"  method="post" >
+        <div>
+            <label for="">User name:</label>
+            <input type="text" name="userName" autocomplete="off">
+        </div>
+        <div>
+            <label for="">password</label>
+            <input type="password" name="password" autocomplete="off">
+        </div>
+        <div>
+            <label for="">confirm password</label>
+            <input type="password" name="rePassword" autocomplete="off">
+        </div>
+        <div>
+            <label for="">name</label>
+            <input type="text" name="name" autocomplete="off">
+        </div>
+        <div>
+            <label for="">phone number</label>
+            <input type="text" name="phoneNumber" autocomplete="off">
+        </div>
+        <div>
+            <label for="">address</label>
+            <input type="text" name="address" autocomplete="off">
+        </div>
+        <div>
+            <button type="submit">Submit</button>
+        </div>
+   </form>
+</body>
+</html>
