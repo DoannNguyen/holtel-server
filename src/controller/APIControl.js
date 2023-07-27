@@ -27,7 +27,27 @@ const deleteUser = async (req, res) => {
 const updateUser = async (req, res) => {
   const id = req.params.id;
   console.log("check id: ", id);
+  const { username, password, name, phone, address } = req.body;
+  await pool.execute(
+    "update users set name = ?, phone = ?, address = ?, username = ?, password = ?  where id = ?",
+    [name, phone, address, username, password, id]
+  );
+  res.send(req.body);
+};
+
+const loginApp = async (req, res) => {
+  const { username, password } = req.body;
   console.log(req.body);
+  const [rows, fields] = await pool.execute(
+    "select * from users where username = ? and password = ?",
+    [username, password]
+  );
+  console.log(rows);
+  if (rows.length != 0) {
+    return res.send(rows[0]);
+  } else {
+    return res.send("not user");
+  }
 };
 
 module.exports = {
@@ -35,4 +55,5 @@ module.exports = {
   addUser,
   deleteUser,
   updateUser,
+  loginApp,
 };

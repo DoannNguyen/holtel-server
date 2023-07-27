@@ -63,6 +63,28 @@ const postUpdateUser = async (req, res) => {
   res.redirect("/holtel-server/users");
 };
 
+const getFormAddRoom = async (req, res) => {
+  const [rows, fields] = await pool.execute("select * from kindrooms");
+  const [rooms, feilds2] = await pool.execute("select * from rooms");
+  console.log(rooms);
+
+  return res.render("addRoomForm.ejs", { data1: rows, data2: rooms });
+};
+
+const postCreateRoom = async (req, res) => {
+  const roomNum = req.body.roomNum;
+  const idKindRoom = req.body.idKindRoom;
+  const price = req.body.price;
+  const imageRoom = `/image/${req.file.filename}`;
+  const decription = req.body.description;
+
+  await pool.execute(
+    "insert into rooms (imageRoom, roomNum, description, price, idKindRoom ) values (?,?,?,?,?)",
+    [imageRoom, roomNum, decription, price, idKindRoom]
+  );
+  res.redirect("/holtel-server/form-add-room");
+};
+
 module.exports = {
   getHomePage,
   postCreateUser,
@@ -71,4 +93,6 @@ module.exports = {
   uploadAvatar,
   updateUser,
   postUpdateUser,
+  getFormAddRoom,
+  postCreateRoom,
 };

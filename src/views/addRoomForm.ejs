@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        label{display: block; margin-top:.5rem;}
+    </style>
+</head>
+<body>
+    <form action="/holtel-server/create-room" method="post" enctype="multipart/form-data">
+        <div>
+            <label for="">Image of room:</label>
+            <input type="file" name="image" id="imageInput" onchange="previewImage()" style="display: block;"/>
+            <img id="preview" src="/image/images.jpg" alt="Preview" style="width: 290px; height: 174px;"/>
+        </div>
+        <div>
+            <label for="">Room number</label>
+            <input type="text" id="" placeholder="Enter room no." name="roomNum">
+        </div>
+        <div>
+            <label for="">Kind of room</label>
+            <select name="idKindRoom" id="">
+              
+           <% for(let i = 0 ; i < data1.length; i++) { %>   
+
+            <option value="<%= data1[i].id %>"><%= data1[i].nameOfKind %></option>
+               
+           <%}%>
+            </select>
+        </div>
+        <div>
+            <label for="">Price</label>
+            <input type="number" min="100000" name="price">
+        </div>
+        <div>
+            <label for="">Description</label>
+            <textarea id="" cols="30" rows="10" name="description"></textarea>
+        </div>
+        <div style="margin-top: .5rem;">
+            <label for="" style="display: inline;">Status</label>
+            <input type="checkbox" name="status">
+        </div>
+        <div>
+            <Button type="submit">submit</Button>
+        </div>
+    </form>
+
+    <hr>
+<table>
+    <h3>List Room</h3>
+    <tHead>
+        <tr>
+            <th>RoomNum</th>
+            <th>Image Room</th>
+            <th>Description</th>
+            <th>price</th>
+            <th>kind Room</th>
+            <th>action</th>
+        </tr>
+    </tHead>
+    <tBody>
+        <% for(let i=0; i<data2.length; i++) {%>
+            <tr>
+                <td>
+                    <%= data2[i].roomNum %>
+                </td>
+                <td>
+                   <img src=" <%= data2[i].imageRoom %>" alt="">
+                </td>
+                <td>
+                    <%= data2[i].description %>
+                </td>
+                <td>
+                    <%= data2[i].price %>
+                </td>
+                <td>
+                    <%= data2[i].idkindRoom %>
+                </td>
+                <td>
+                    <!-- Button trigger modal -->
+                    <button><a href="">delete</a></button> |
+                    <button><a href="">update</a></button> 
+                </td>
+            </tr>
+            <%}%>
+    </tBody>
+</table>
+
+    <script>
+        function previewImage() {
+                const preview = document.getElementById("preview");
+                const imageInput = document.getElementById("imageInput");
+                const file = imageInput.files[0];
+                const reader = new FileReader();
+
+                reader.addEventListener("load", () => {
+                    preview.setAttribute("src", reader.result);
+                });
+
+                if (file) {
+                    reader.readAsDataURL(file);
+                }
+            }
+    </script>
+</body>
+</html>

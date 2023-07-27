@@ -7,6 +7,7 @@ const initApiRoute = (app) => {
   router.post("/add-user", APIControl.addUser);
   router.delete("/delete/:id", APIControl.deleteUser);
   router.put("/update-user/:id", APIControl.updateUser);
+  router.post("/login", APIControl.loginApp);
 
   return app.use("/api/v1", router);
 };

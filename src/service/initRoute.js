@@ -46,6 +46,12 @@ const initRoute = (app) => {
   router.post("/update-user", routerControl.postUpdateUser);
   router.get("/update/:id", routerControl.updateUser);
 
+  router.get("/form-add-room", routerControl.getFormAddRoom);
+  router.post(
+    "/create-room",
+    upload.single("image"),
+    routerControl.postCreateRoom
+  );
   return app.use("/holtel-server", router);
 };
 
