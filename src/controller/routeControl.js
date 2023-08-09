@@ -66,9 +66,12 @@ const postUpdateUser = async (req, res) => {
 const getFormAddRoom = async (req, res) => {
   const [rows, fields] = await pool.execute("select * from kindrooms");
   const [rooms, feilds2] = await pool.execute("select * from rooms");
-  console.log(rooms);
+  const [data, feilds1] = await pool.execute(
+    "select a.idRoom, a.imageRoom, a.roomNum, a.description, a.price, b.nameOfKind from rooms a inner join kindrooms b on a.idKindRoom = b.id"
+  );
+  console.log("check data ", data);
 
-  return res.render("addRoomForm.ejs", { data1: rows, data2: rooms });
+  return res.render("addRoomForm.ejs", { data1: rows, data2: data });
 };
 
 const postCreateRoom = async (req, res) => {
