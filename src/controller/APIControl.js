@@ -52,30 +52,75 @@ const loginApp = async (req, res) => {
 
 const getAllRoom = async (req, res) => {
   const [data, feilds1] = await pool.execute(
-    "select a.idRoom, a.imageRoom, a.roomNum, a.description, a.price, b.nameOfKind from rooms a inner join kindrooms b on a.idKindRoom = b.id where a.status = ?",[0]
+    "select a.idRoom, a.imageRoom, a.roomNum, a.description, a.price, b.nameOfKind from rooms a inner join kindrooms b on a.idKindRoom = b.id where a.status = ?",
+    [0]
   );
-  console.log("check data ", data);
   res.send(data);
 };
-
-const bookRoom = async (req,res) => {
-  const {fromDay, toDay, idRoom, idUser, price} = req.body;
-  console.log(req.body)
-  await pool.execute('insert into roombooked (fromDay, toDay, idRoom, idUser, price) values (?, ?, ?, ?, ?)', 
-  [fromDay, toDay, idRoom, idUser,price]);
-  await pool.execute('update rooms set status = ? where idRoom = ?', [-1, idRoom])
-  res.send(req.body);
-}
-
-const updateRoomBooked = async (req, res) => {
-
-}
-
-const getRoomBooked = async (req,res) => {
+const getRooomById = async (req, res) => {
   const id = req.params.id;
-  const [rows, fields] = await pool.execute('select * from roomBooked where idUser = ?', [id]);
+  const [rows, fields] = await pool.execute(
+    "select * from rooms where idRoom = ?",
+    [id]
+  );
   res.send(rows);
-}
+};
+const bookRoom = async (req, res) => {
+  const { fromDay, toDay, idRoom, idUser, price } = req.body;
+  console.log(req.body);
+  await pool.execute(
+    "insert into roombooked (fromDay, toDay, idRoom, idUser, price) values (?, ?, ?, ?, ?)",
+    [fromDay, toDay, idRoom, idUser, price]
+  );
+  await pool.execute("update rooms set status = ? where idRoom = ?", [
+    -1,
+    idRoom,
+  ]);
+  res.send(req.body);
+};
+
+const deleteRoomBooked = async (req, res) => {
+  const { id, idRoom } = req.body;
+  await pool.execute("delete from roomBooked where id = ?", [id]);
+  await pool.execute("update rooms set status = ? where idRoom = ?", [
+    0,
+    idRoom,
+  ]);
+  res.send(req.body);
+};
+
+const getRoomBooked = async (req, res) => {
+  const id = req.params.id;
+  const [rows, fields] = await pool.execute(
+    "select a.id, a.fromDay, a.toDay, a.price, a.idRoom, b.imageRoom, b.roomNum from roomBooked a inner join rooms b on a.idRoom = b.idRoom where idUser = ?",
+    [id]
+  );
+  res.send(rows);
+};
+
+const getKindRoom = async (req, res) => {
+  const [rows, fields] = await pool.execute("select * from kindrooms");
+  res.send(rows);
+};
+
+const getRate = async (req, res) => {
+  const id = req.params.id;
+  const [rows, fields] = await pool.execute(
+    "select a.description, a.id, b.roomNum, c.name from rooms b inner join rates a on a.idRoom = b.idRoom inner join users c on a.idUser = c.id where b.idRoom = ?",
+    [id]
+  );
+  res.send(rows);
+};
+
+const postRate = async (req, res) => {
+  const { description, idRoom, idUser } = req.body;
+  console.log(req.body);
+  const [rows, fields] = await pool.execute(
+    "insert into rates (description , idRoom, idUser) values (?, ?, ?)",
+    [description, idRoom, idUser]
+  );
+  res.send(rows);
+};
 
 module.exports = {
   getAllUser,
@@ -85,6 +130,10 @@ module.exports = {
   loginApp,
   getAllRoom,
   bookRoom,
-  updateRoomBooked,
-  getRoomBooked
+  deleteRoomBooked,
+  getRoomBooked,
+  getKindRoom,
+  getRate,
+  postRate,
+  getRooomById,
 };
